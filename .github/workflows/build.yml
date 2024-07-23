@@ -1,25 +1,32 @@
-name: Build on PR
+name: Build Succeeds on PR
 
 on:
   pull_request:
     branches:
+# You can choose to add more branches here if you wish to. For now, we are 
+# sticking to master
       - master
 
+# If your YAML is malformed, then it will not run properly and debugging it 
+# is very difficult
 jobs:
   build:
+    name: Build the project
     runs-on: ubuntu-latest
     steps:
+      # "actions/checkout@v3" is a special repository which is used to setup
+      # GitHub actions
       - uses: actions/checkout@v3
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
-      
-      - name: Install Dependencies
+
+      - name: Install dependencies
         run: npm install
-      
-      - name: Generate prisma client
-        run: npm run db:generate
-        
-      - name: Run Build
+
+      # - name: Generate prisma client
+      #   run: npx prisma generate
+
+      - name: Run build
         run: npm run build
